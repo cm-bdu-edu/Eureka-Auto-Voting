@@ -1,0 +1,30 @@
+========================================
+  HUONG DAN SU DUNG EUREKA AUTO VOTING
+========================================
+
+BUOC 1: CHAY FILE run-voting.vbs
+   - Double click vao file run-voting.vbs
+   - Chrome se tu dong mo
+
+BUOC 2: CLICK VAO ICON EXTENSION
+   - Tim icon extension o goc tren phai cua Chrome
+   - Icon hinh anh: [icon.png]
+   - Click vao icon de mo popup
+
+BUOC 3: NHAP MA POSTER
+   - Nhap cac ma poster (moi ma 1 dong)
+   - Vi du:
+     CNTP2025-001
+     CNTP2025-002
+     CNTP2025-003
+
+BUOC 4: NHAN "BAT DAU BINH CHON"
+   - Extension se tu dong binh chon tung poster
+   - Doi cho den khi hoan thanh
+
+LUU Y:
+- Dam bao da dang nhap tai khoan Google truoc
+- Neu chua dang nhap, dong Chrome va chay lai
+- Moi poster mat khoang 5-10 giay
+
+========================================

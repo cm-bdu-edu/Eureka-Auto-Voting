@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eureka Auto Voting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            height: 180px;
+        }
+
+        select:focus {
+            border-color: #667eea;
+        }
+
+        select option {
+            padding: 8px;
+        }
+
+        select option:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: 600;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">🏆</div>
+            <h1>Eureka Auto Voting</h1>
+            <p class="subtitle">Tự động tìm kiếm và bình chọn poster</p>
+        </div>
+
+        <div class="form-group">
+            <label>Chọn Mã Poster (Giữ Ctrl để chọn nhiều)</label>
+            <select id="posterId" multiple>
+                <option value="CNTT2025-055">CNTT2025-055</option>
+                <option value="CNTT2025-159">CNTT2025-159</option>
+                <option value="VHNT2025-095">VHNT2025-095</option>
+                <option value="KHGD2025-151">KHGD2025-151</option>
+                <option value="HCPL2025-109">HCPL2025-109</option>
+                <option value="KT2025-0338">KT2025-0338</option>
+                <option value="KT2025-0344">KT2025-0344</option>
+            </select>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="selectAll">
+            <label for="selectAll">Chọn tất cả</label>
+        </div>
+
+        <button class="button" id="goBtn">Bắt đầu bình chọn</button>
+
+        <div class="footer">
+            Khoa học trẻ 2025
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

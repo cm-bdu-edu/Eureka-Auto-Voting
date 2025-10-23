@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Bình chọn Eureka Poster",
+  "version": "1.0",
+  "description": "Tự động mở poster theo mã để bình chọn trên trang khoa học trẻ",
+  "permissions": ["tabs", "scripting", "storage", "system.display"],
+  "host_permissions": ["https://binhchon.khoahoctre.com.vn/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://binhchon.khoahoctre.com.vn/eureka-poster-2025.html*"],
+      "js": ["content.js"]
+    }
+  ]
+}

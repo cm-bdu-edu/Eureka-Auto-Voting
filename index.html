@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eureka Auto Voting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            min-height: 180px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            border-color: #667eea;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: 600;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #856404;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">🏆</div>
+            <h1>Eureka Auto Voting</h1>
+            <p class="subtitle">Tự động tìm kiếm và bình chọn poster</p>
+        </div>
+
+        <div class="warning">
+            ⚠️ Đảm bảo đã chạy file <strong>run-voting.vbs</strong> để load extension!
+        </div>
+
+        <div class="form-group">
+            <label>Nhập Mã Poster (mỗi mã 1 dòng)</label>
+            <textarea id="posterInput"
+                placeholder="CNTT2025-055&#10;CNTT2025-159&#10;VHNT2025-095&#10;KHGD2025-151"></textarea>
+            <div class="hint">Mỗi mã poster trên một dòng riêng</div>
+        </div>
+
+        <button class="button" id="goBtn">Bắt đầu bình chọn</button>
+
+        <div class="footer">
+            Khoa học trẻ 2025
+        </div>
+    </div>
+
+    <script>
+        // Kiểm tra xem có chrome API không
+        const hasExtension = typeof chrome !== 'undefined' && chrome.storage;
+
+        if (!hasExtension) {
+            document.querySelector('.warning').innerHTML =
+                '❌ <strong>Extension chưa được load!</strong><br>Vui lòng chạy file <strong>run-voting.vbs</strong> trước.';
+            document.getElementById('goBtn').disabled = true;
+        }
+
+        // Nút bình chọn
+        document.getElementById("goBtn").addEventListener("click", async () => {
+            const input = document.getElementById("posterInput").value.trim();
+
+            if (!input) {
+                return alert("Vui lòng nhập ít nhất một mã poster!");
+            }
+
+            // Tách các dòng và lọc dòng trống
+            const posterIds = input.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            if (posterIds.length === 0) {
+                return alert("Vui lòng nhập ít nhất một mã poster!");
+            }
+
+            if (!hasExtension) {
+                alert("Extension chưa được load! Vui lòng chạy file run-voting.vbs");
+                return;
+            }
+
+            try {
+                // Lưu danh sách vào storage
+                await chrome.storage.local.set({
+                    votingQueue: posterIds,
+                    votingState: {
+                        isRunning: true,
+                        current: 0,
+                        total: posterIds.length,
+                        currentPoster: posterIds[0],
+                        successCount: 0,
+                        skipCount: 0,
+                        errorCount: 0
+                    }
+                });
+
+                // Lấy kích thước màn hình
+                chrome.system.display.getInfo((displays) => {
+                    const primaryDisplay = displays[0];
+                    const screenWidth = primaryDisplay.workArea.width;
+
+                    const windowWidth = 400;
+                    const windowHeight = 600;
+                    const left = screenWidth - windowWidth - 20;
+                    const top = 20;
+
+                    // Mở cửa sổ trạng thái
+                    chrome.windows.create({
+                        url: chrome.runtime.getURL('status-window.html'),
+                        type: 'popup',
+                        width: windowWidth,
+                        height: windowHeight,
+                        left: left,
+                        top: top
+                    });
+                });
+
+                // Gửi message để bắt đầu
+                chrome.runtime.sendMessage({ type: 'startVoting' });
+
+                // Hiển thị thông báo
+                alert(`Đã bắt đầu bình chọn ${posterIds.length} poster!\nCửa sổ trạng thái sẽ hiện ở góc phải màn hình.`);
+
+            } catch (error) {
+                console.error('Lỗi:', error);
+                alert('Có lỗi xảy ra: ' + error.message);
+            }
+        });
+    </script>
+</body>
+
+</html>

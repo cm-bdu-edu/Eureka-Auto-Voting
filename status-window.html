@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Trạng thái bình chọn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .header h2 {
+            color: #667eea;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card.success {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+        }
+
+        .stat-card.skip {
+            background: linear-gradient(135deg, #4facfe15, #00f2fe15);
+        }
+
+        .stat-card.error {
+            background: linear-gradient(135deg, #f093fb15, #f5576c15);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card.success .stat-number {
+            color: #667eea;
+        }
+
+        .stat-card.skip .stat-number {
+            color: #4facfe;
+        }
+
+        .stat-card.error .stat-number {
+            color: #f5576c;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .current-poster {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .current-poster-label {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .current-poster-id {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .log-section {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .log-item {
+            font-size: 12px;
+            padding: 6px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+        }
+
+        .log-item.success {
+            color: #667eea;
+        }
+
+        .log-item.skip {
+            color: #4facfe;
+        }
+
+        .log-item.error {
+            color: #f5576c;
+        }
+
+        .log-status {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #e0e0e0;
+        }
+
+        .log-item.success .log-status {
+            background: #667eea;
+            color: white;
+        }
+
+        .log-item.skip .log-status {
+            background: #4facfe;
+            color: white;
+        }
+
+        .log-item.error .log-status {
+            background: #f5576c;
+            color: white;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #hideBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        #stopBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Đang bình chọn tự động</h2>
+            <p>Vui lòng không đóng cửa sổ này</p>
+        </div>
+
+        <div class="current-poster" id="currentPoster">
+            <div class="current-poster-label">Đang xử lý</div>
+            <div class="current-poster-id">Đang khởi động...</div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0 / 0</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card success">
+                <div class="stat-number" id="successCount">0</div>
+                <div class="stat-label">Thành công</div>
+            </div>
+            <div class="stat-card skip">
+                <div class="stat-number" id="skipCount">0</div>
+                <div class="stat-label">Bỏ qua</div>
+            </div>
+            <div class="stat-card error">
+                <div class="stat-number" id="errorCount">0</div>
+                <div class="stat-label">Lỗi</div>
+            </div>
+        </div>
+
+        <div class="log-section" id="logSection"></div>
+
+        <div class="buttons">
+            <button id="hideBtn">Ẩn cửa sổ</button>
+            <button id="stopBtn">Dừng lại</button>
+        </div>
+    </div>
+
+    <script src="status-window.js"></script>
+</body>
+</html>

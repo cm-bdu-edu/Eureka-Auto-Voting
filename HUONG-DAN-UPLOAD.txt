@@ -1,0 +1,60 @@
+========================================
+  HUONG DAN UPLOAD TRANG WEB
+========================================
+
+CACH 1: GITHUB PAGES (MIEN PHI, DE NHAT)
+-----------------------------------------
+1. Tao tai khoan GitHub (neu chua co): https://github.com
+2. Tao repository moi, dat ten: eureka-voting
+3. Upload file index.html len repository
+4. Vao Settings > Pages
+5. Chon branch "main" va folder "root"
+6. Nhan Save
+7. Doi 1-2 phut, trang se online tai:
+   https://your-username.github.io/eureka-voting/
+
+8. Copy URL nay va dan vao file run-voting.vbs dong:
+   strWebURL = "https://your-username.github.io/eureka-voting/index.html"
+
+
+CACH 2: NETLIFY (MIEN PHI, NHANH)
+----------------------------------
+1. Truy cap: https://www.netlify.com
+2. Dang ky tai khoan mien phi
+3. Keo tha file index.html vao trang
+4. Netlify se tu dong tao URL, vi du:
+   https://random-name-123.netlify.app/
+5. Copy URL va dan vao run-voting.vbs
+
+
+CACH 3: CHAY LOCAL (KHONG CAN UPLOAD)
+--------------------------------------
+1. Mo Command Prompt trong thu muc nay
+2. Chay lenh:
+   python -m http.server 8000
+   
+   HOAC neu khong co Python:
+   npx http-server -p 8000
+
+3. Trong run-voting.vbs, sua thanh:
+   strWebURL = "http://localhost:8000/index.html"
+
+4. Luu y: Phai chay server truoc khi chay file VBS
+
+
+SAU KHI UPLOAD XONG:
+--------------------
+1. Sua file run-voting.vbs, thay URL
+2. Chay file run-voting.vbs
+3. Chrome se mo voi extension + trang web cua ban
+4. Nhap ma poster va bat dau binh chon!
+
+
+LUU Y:
+------
+- File index.html khong can extension de hoat dong
+- Chi can chay run-voting.vbs de load extension
+- Sau do truy cap trang web la dung duoc
+- Extension chi chay tam thoi, dong Chrome la het
+
+========================================
