@@ -54,9 +54,24 @@ If intResult = vbCancel Then
 End If
 
 ' URL trang web cua ban (thay bang URL that sau khi upload)
-strWebURL = "https://your-username.github.io/eureka-voting/start.html"
+strWebURL = "https://cm-bdu-edu.github.io/Eureka-Auto-Voting/"
 ' HOAC neu host local: "http://localhost:8000/start.html"
 
 ' Mo Chrome voi extension va trang web
 strCommand = """" & strChromePath & """ --load-extension=""" & strCurrentPath & """ """ & strWebURL & """"
 objShell.Run strCommand, 1, False
+
+' Cho 3 giay de Chrome khoi dong
+WScript.Sleep 3000
+
+' Kiem tra va huong dan
+MsgBox "Kiem tra xem extension da load chua:" & vbCrLf & vbCrLf & _
+       "1. Nhin goc TREN PHAI cua Chrome" & vbCrLf & _
+       "2. Co thay icon 'puzzle' (Extensions) khong?" & vbCrLf & _
+       "3. Neu KHONG thay, lam theo:" & vbCrLf & vbCrLf & _
+       "   - Nhan Ctrl+Shift+E" & vbCrLf & _
+       "   - Hoac vao chrome://extensions" & vbCrLf & _
+       "   - Bat 'Developer mode'" & vbCrLf & _
+       "   - Nhan 'Load unpacked'" & vbCrLf & _
+       "   - Chon thu muc: " & strCurrentPath & vbCrLf & vbCrLf & _
+       "4. Sau khi load xong, RELOAD trang web", vbInformation, "Huong dan"

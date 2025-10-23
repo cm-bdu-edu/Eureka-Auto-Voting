@@ -159,12 +159,30 @@
 
     <script>
         // Kiểm tra xem có chrome API không
-        const hasExtension = typeof chrome !== 'undefined' && chrome.storage;
+        let hasExtension = typeof chrome !== 'undefined' && chrome.storage;
 
+        // Nếu chưa có extension, thử reload sau 2 giây
         if (!hasExtension) {
+            let reloadCount = parseInt(sessionStorage.getItem('reloadCount') || '0');
+            
+            if (reloadCount < 3) {
+                sessionStorage.setItem('reloadCount', (reloadCount + 1).toString());
+                document.querySelector('.warning').innerHTML =
+                    '⏳ <strong>Đang chờ extension load...</strong><br>Tự động reload lần ' + (reloadCount + 1) + '/3';
+                setTimeout(() => location.reload(), 2000);
+            } else {
+                document.querySelector('.warning').innerHTML =
+                    '❌ <strong>Extension chưa được load!</strong><br>' +
+                    'Vui lòng: 1. Đóng Chrome, 2. Chạy lại <strong>run-voting.vbs</strong>, 3. Hoặc nhấn F5';
+                document.getElementById('goBtn').disabled = true;
+            }
+        } else {
+            sessionStorage.removeItem('reloadCount');
             document.querySelector('.warning').innerHTML =
-                '❌ <strong>Extension chưa được load!</strong><br>Vui lòng chạy file <strong>run-voting.vbs</strong> trước.';
-            document.getElementById('goBtn').disabled = true;
+                '✅ <strong>Extension đã sẵn sàng!</strong><br>Nhập mã poster và bắt đầu bình chọn.';
+            document.querySelector('.warning').style.background = '#d4edda';
+            document.querySelector('.warning').style.borderColor = '#28a745';
+            document.querySelector('.warning').style.color = '#155724';
         }
 
         // Nút bình chọn
